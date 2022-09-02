@@ -11,24 +11,52 @@ import java.util.Map;
 import java.util.Set;
 
 public class Tablero extends Entity<TableroId> {
-    private Map<JugadorId, Carta> cartas;
-    private Integer tiempo;
-    public Tablero(TableroId entityId, Integer tiempo) {
+    private Integer tiempoEnSegundos;
+    private Boolean estaHabilitado;
+    private final Map<JugadorId, Set<Carta>> partida;
+
+    public Tablero(TableroId entityId, Set<JugadorId> jugadorIds) {
         super(entityId);
-        this.cartas = new HashMap<>();
-        this.tiempo = tiempo;
+        this.partida = new HashMap<>();
+        this.estaHabilitado = false;
+        jugadorIds.forEach(jugadorId -> partida.put(jugadorId, new HashSet<>()));
     }
 
-    public void cambiarTiempo(Integer tiempo){
-        this.tiempo = tiempo;
+    public void ajustarTiempo(Integer tiempo){
+        this.tiempoEnSegundos = tiempo;
     }
 
-    public void ponerCartaEnTablero(JugadorId id, Carta carta){
-        this.cartas.put(id, carta);
+
+    public Integer tiempo() {
+        return tiempoEnSegundos;
     }
 
-    public Set<Carta> cartas() {
-        return new HashSet<>(cartas.values());
+    public void adicionarPartida(JugadorId jugadorId, Carta carta){
+        partida.getOrDefault(jugadorId, new HashSet<>()).add(carta);
+    }
+
+    public void quitarCarta(JugadorId jugadorId, Carta carta){
+        partida.getOrDefault(jugadorId, new HashSet<>()).remove(carta);
+    }
+
+    public void habilitarApuesta(){
+        this.estaHabilitado = true;
+    }
+
+    public void inhabilitarApuesta(){
+        this.estaHabilitado = false;
+    }
+
+    public void reiniciarPartida(){
+        partida.clear();
+    }
+
+    public Boolean estaHabilitado() {
+        return estaHabilitado;
+    }
+
+    public Map<JugadorId, Set<Carta>> partida() {
+        return partida;
     }
 
 

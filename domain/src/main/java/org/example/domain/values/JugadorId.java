@@ -3,11 +3,15 @@ package org.example.domain.values;
 import co.com.sofka.domain.generic.Identity;
 
 public class JugadorId extends Identity {
-    public JugadorId(String id) {
-        super(id);
+    public JugadorId(String value) {
+        super(value);
     }
 
-    public static JugadorId of(String id) {
-        return new JugadorId(id);
+    public JugadorId(){
+
+    }
+
+    public static JugadorId of(String value){
+        return  new JugadorId(value);
     }
 }

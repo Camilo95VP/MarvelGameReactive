@@ -2,9 +2,9 @@ package org.example.business.gateway.model;
 
 public class CartaMaestra {
     private String id;
-    private Integer poder;
-    private String url;
     private String nombre;
+    private String uri;
+    private Integer poder;
 
     public String getId() {
         return id;
@@ -14,27 +14,27 @@ public class CartaMaestra {
         this.id = id;
     }
 
-    public Integer getPoder() {
-        return poder;
-    }
-
-    public void setPoder(Integer poder) {
-        this.poder = poder;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public String getNombre() {
         return nombre;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public Integer getPoder() {
+        return poder;
+    }
+
+    public void setPoder(Integer poder) {
+        this.poder = poder;
     }
 }
