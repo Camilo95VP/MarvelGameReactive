@@ -33,7 +33,10 @@ public class CrearJuegoUseCase implements Function<Mono<CrearJuegoCommand>, Flux
         return listaDeCartaService.obtenerCartasDeMarvel().collectList()
                 .flatMapMany(cartas -> input.flatMapIterable(command -> {
 
-                    //TODO: validaciones del comando
+                    if (command.getJugadores().size() < 2){
+                        throw new IllegalArgumentException("Para jugar deben haber minimo dos jugadores");
+                    }
+
                     var factory = new JugadorFactory();
                     command.getJugadores()
                             .forEach((id, alias) ->

@@ -46,6 +46,9 @@ public class JuegoEventChange extends EventChange {
         });
 
         apply((CartaPuestaEnTablero event) -> {
+            if(Boolean.FALSE.equals(juego.tablero.estaHabilitado())){
+                throw new IllegalArgumentException("No se puede jugar por que el tablero no esta habilitado");
+            }
             juego.tablero.adicionarPartida(event.getJugadorId(), event.getCarta());
         });
 
