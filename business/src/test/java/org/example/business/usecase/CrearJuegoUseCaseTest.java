@@ -17,7 +17,6 @@ import reactor.test.StepVerifier;
 import java.util.HashMap;
 import java.util.function.Predicate;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -72,7 +71,7 @@ class CrearJuegoUseCaseTest {
         return  Flux.just(
                 new CartaMaestra("1","tarjeta1"),
                 new CartaMaestra("2","tarjeta2"),
-               new CartaMaestra("3","tarjeta2"),
+                new CartaMaestra("3","tarjeta2"),
                 new CartaMaestra("4","tarjeta2"),
                 new CartaMaestra("5","tarjeta2"),
                 new CartaMaestra("6","tarjeta2"),

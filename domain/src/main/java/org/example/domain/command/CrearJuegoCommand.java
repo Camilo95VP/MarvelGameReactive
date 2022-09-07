@@ -1,7 +1,6 @@
 package org.example.domain.command;
 
 import co.com.sofka.domain.generic.Command;
-import org.example.domain.values.JugadorId;
 
 import java.util.Map;
 
@@ -9,6 +8,9 @@ public class CrearJuegoCommand extends Command {
     private String juegoId;
     private Map<String, String> jugadores;
     private String jugadorPrincipalId;
+
+    public CrearJuegoCommand() {
+    }
 
     public void setJugadores(Map<String, String> jugadores) {
         this.jugadores = jugadores;

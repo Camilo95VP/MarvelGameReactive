@@ -48,8 +48,8 @@ class PonerCartaEnTableroUseCaseTest {
         command.setJuegoId("fffff");
         command.setJugadorId("yyyyy");
         when(repository.obtenerEventosPor("fffff")).thenReturn(history());
-
-        StepVerifier.create(useCase.apply(Mono.just(command)))//act
+        //act
+        StepVerifier.create(useCase.apply(Mono.just(command)))
                 .expectNextMatches(domainEvent -> {
                     var event = (CartaPuestaEnTablero) domainEvent;
                     Assertions.assertEquals("yyyyy", event.getJugadorId().value());

@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 
 @Configuration
-@ComponentScan(value="org.example.application.usecase",
+@ComponentScan(value="org.example.business.usecase",
         useDefaultFilters = false, includeFilters = @ComponentScan.Filter
         (type = FilterType.REGEX, pattern = ".*UseCase")
 )
