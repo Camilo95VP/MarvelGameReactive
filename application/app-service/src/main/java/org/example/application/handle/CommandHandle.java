@@ -3,7 +3,15 @@ package org.example.application.handle;
 
 
 import org.example.business.usecase.CrearJuegoUseCase;
+import org.example.business.usecase.CrearRondaUseCase;
+import org.example.business.usecase.IniciarJuegoUseCase;
+import org.example.business.usecase.IniciarRondaUseCase;
+import org.example.business.usecase.PonerCartaEnTableroUseCase;
 import org.example.domain.command.CrearJuegoCommand;
+import org.example.domain.command.CrearRondaCommand;
+import org.example.domain.command.IniciarJuegoCommand;
+import org.example.domain.command.IniciarRondaCommand;
+import org.example.domain.command.PonerCartaEnTablero;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -17,9 +25,12 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 @Configuration
 public class CommandHandle {
     private final IntegrationHandle integrationHandle;
+    private final ErrorHandler errorHandler;
 
-    public CommandHandle(IntegrationHandle integrationHandle) {
+
+    public CommandHandle(IntegrationHandle integrationHandle, ErrorHandler errorHandler) {
         this.integrationHandle = integrationHandle;
+        this.errorHandler = errorHandler;
     }
 
     @Bean
@@ -30,6 +41,55 @@ public class CommandHandle {
                 request -> usecase.andThen(integrationHandle)
                         .apply(request.bodyToMono(CrearJuegoCommand.class))
                         .then(ServerResponse.ok().build())
+
+        );
+    }
+    @Bean
+    public RouterFunction<ServerResponse> iniciar(IniciarJuegoUseCase usecase) {
+        return route(
+                POST("/juego/iniciar").and(accept(MediaType.APPLICATION_JSON)),
+                request -> usecase.andThen(integrationHandle)
+                        .apply(request.bodyToMono(IniciarJuegoCommand.class))
+                        .then(ServerResponse.ok().build())
+                        .onErrorResume(errorHandler::badRequest)
+
+        );
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> iniciarRonda(IniciarRondaUseCase usecase) {
+        return route(
+                POST("/juego/ronda/iniciar").and(accept(MediaType.APPLICATION_JSON)),
+                request -> usecase.andThen(integrationHandle)
+                        .apply(request.bodyToMono(IniciarRondaCommand.class))
+                        .then(ServerResponse.ok().build())
+                        .onErrorResume(errorHandler::badRequest)
+
+        );
+    }
+
+
+    @Bean
+    public RouterFunction<ServerResponse> poner(PonerCartaEnTableroUseCase usecase) {
+        return route(
+                POST("/juego/poner").and(accept(MediaType.APPLICATION_JSON)),
+                request -> usecase.andThen(integrationHandle)
+                        .apply(request.bodyToMono(PonerCartaEnTablero.class))
+                        .then(ServerResponse.ok().build())
+                        .onErrorResume(errorHandler::badRequest)
+
+        );
+    }
+
+
+    @Bean
+    public RouterFunction<ServerResponse> crearRonda(CrearRondaUseCase usecase) {
+        return route(
+                POST("/juego/crear/ronda").and(accept(MediaType.APPLICATION_JSON)),
+                request -> usecase.andThen(integrationHandle)
+                        .apply(request.bodyToMono(CrearRondaCommand.class))
+                        .then(ServerResponse.ok().build())
+                        .onErrorResume(errorHandler::badRequest)
 
         );
     }

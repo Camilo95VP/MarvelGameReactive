@@ -22,20 +22,22 @@ public class CrearRondaUseCase extends UseCaseForCommand<CrearRondaCommand> {
 
   @Override
   public Flux<DomainEvent> apply(Mono<CrearRondaCommand> crearRondaCommandMono) {
-    return crearRondaCommandMono.flatMapMany((comando) ->
-        repository
-            .obtenerEventosPor(comando.getJuegoId()).collectList()
-            .flatMapIterable(event -> {
-              var juego = Juego.from(JuegoId.of(comando.getJuegoId()), event);
-              var jugadores = comando.getJugadores().stream()
-                  .map(JugadorId::of)
-                  .collect(Collectors.toSet());
-              var ronda = new Ronda(1, jugadores);
-              juego.crearRonda(ronda, comando.getTiempo());
+      return crearRondaCommandMono.flatMapMany((comando) ->
+              repository
+                      .obtenerEventosPor(comando.getJuegoId()).collectList()
+                      .flatMapIterable(event -> {
+                          var juego = Juego.from(JuegoId.of(comando.getJuegoId()), event);
+                          var jugadores = comando.getJugadores().stream()
+                                  .map(JugadorId::of).collect(Collectors.toSet());
 
-              return juego.getUncommittedChanges();
+                          if (juego.ronda() == null) {
+                              juego.crearRonda(new Ronda(1,jugadores), comando.getTiempo());
+                          }
+                          juego.ronda().incrementarRonda(jugadores);
 
-            })
-    );
+                          return juego.getUncommittedChanges();
+
+                      })
+      );
   }
 }
