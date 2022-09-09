@@ -5,6 +5,7 @@ import org.example.business.gateway.ListaDeCartaService;
 import org.example.business.gateway.model.CartaMaestra;
 import org.example.domain.command.CrearJuegoCommand;
 import org.example.domain.events.JuegoCreado;
+import org.example.domain.events.JugadorAgregado;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,8 +36,8 @@ class CrearJuegoUseCaseTest {
         var command = new CrearJuegoCommand();
         command.setJuegoId("XXX");
         command.setJugadores(new HashMap<>());
-        command.getJugadores().put("123","Lu");
-        command.getJugadores().put("56","2");
+        command.getJugadores().put("123","Juan");
+        command.getJugadores().put("456","Carlos");
         command.setJugadorPrincipalId("123");
 
         when(listaDeCartasService.obtenerCartasDeMarvel()).thenReturn(history());
@@ -46,20 +47,21 @@ class CrearJuegoUseCaseTest {
                     @Override
                     public boolean test(DomainEvent domainEvent) {
                         var event = (JuegoCreado) domainEvent;
-
                         return "XXX".equals(event.aggregateRootId()) && "123".equals(event.getJugadorPrincipal().value());
-
-
                     }
                 }).expectNextMatches(new Predicate<DomainEvent>() {
                     @Override
                     public boolean test(DomainEvent domainEvent) {
-                        return true;
+                        var event = (JugadorAgregado) domainEvent;
+                        return "123".equals(event.getJuegoId().value())
+                                && "Juan".equals(event.getAlias());
                     }
                 }).expectNextMatches(new Predicate<DomainEvent>() {
                     @Override
                     public boolean test(DomainEvent domainEvent) {
-                        return true;
+                        var event = (JugadorAgregado) domainEvent;
+                        return "456".equals(event.getJuegoId().value())
+                                && "Carlos".equals(event.getAlias());
                     }
                 }).expectComplete().verify();
 
