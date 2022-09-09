@@ -53,14 +53,14 @@ class CrearJuegoUseCaseTest {
                     @Override
                     public boolean test(DomainEvent domainEvent) {
                         var event = (JugadorAgregado) domainEvent;
-                        return "123".equals(event.getJuegoId().value())
+                        return "123".equals(event.getJugadorId().value())
                                 && "Juan".equals(event.getAlias());
                     }
                 }).expectNextMatches(new Predicate<DomainEvent>() {
                     @Override
                     public boolean test(DomainEvent domainEvent) {
                         var event = (JugadorAgregado) domainEvent;
-                        return "456".equals(event.getJuegoId().value())
+                        return "456".equals(event.getJugadorId().value())
                                 && "Carlos".equals(event.getAlias());
                     }
                 }).expectComplete().verify();
