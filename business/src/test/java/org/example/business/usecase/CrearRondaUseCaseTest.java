@@ -33,8 +33,8 @@ class CrearRondaUseCaseTest {
 
     @Test
     void crearRondaHappyPass() {
-        var juegoId = JuegoId.of("JuegoId-001");
-        var jugadores = Set.of("jugadorid-001", "jugadorId-002");
+        var juegoId = JuegoId.of("01");
+        var jugadores = Set.of("01", "02");
         var comando = new CrearRondaCommand(juegoId.value(), jugadores);
 
         when(repository.obtenerEventosPor(juegoId.value())).thenReturn(eventos());
@@ -43,15 +43,15 @@ class CrearRondaUseCaseTest {
                 .expectNextMatches(eventoDominio ->{
                     var evento = (RondaCreada) eventoDominio;
 
-                    return "JuegoId-001".equals(evento.aggregateRootId());
+                    return "01".equals(evento.aggregateRootId());
                 })
                 .expectComplete()
                 .verify();
     }
     private Flux<DomainEvent> eventos() {
-        var evento = new JuegoCreado(JugadorId.of("jugadorid-001"));
-        var jugadores = Set.of(JugadorId.of("jugadorid-001"), JugadorId.of("jugadorid-002"));
-        var evento2 = new TableroCreado(TableroId.of("tableroId-001"),jugadores);
+        var evento = new JuegoCreado(JugadorId.of("01"));
+        var jugadores = Set.of(JugadorId.of("01"), JugadorId.of("02"));
+        var evento2 = new TableroCreado(TableroId.of("01"),jugadores);
         return Flux.just(
                 evento,
                 evento2
