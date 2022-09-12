@@ -5,6 +5,7 @@ import org.example.business.gateway.JuegoDomainEventRepository;
 import org.example.domain.Juego;
 import org.example.domain.command.IniciarJuegoCommand;
 import org.example.domain.values.JuegoId;
+import org.example.domain.values.Ronda;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -24,6 +25,7 @@ public class IniciarJuegoUseCase extends UseCaseForCommand<IniciarJuegoCommand> 
                 .flatMapIterable(events -> {
                     var juego = Juego.from(JuegoId.of(command.getJuegoId()), events);
                     juego.crearTablero();
+                    juego.crearRonda(new Ronda(1, juego.jugadores().keySet()), 80);
                     return juego.getUncommittedChanges();
                 }));
     }

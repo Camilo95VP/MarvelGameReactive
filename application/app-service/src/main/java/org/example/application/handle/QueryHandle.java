@@ -70,6 +70,18 @@ public class QueryHandle {
         );
     }
 
+    @Bean
+    public RouterFunction<ServerResponse> mazoPorJugador() {
+        return RouterFunctions.route(
+                GET("/jugador/mazo/{uid}"),
+                request -> template.find(filterByUId(request.pathVariable("uid")), MazoViewModel.class, "mazoview")
+                        .collectList()
+                        .flatMap(list -> ServerResponse.ok()
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .body(BodyInserters.fromPublisher(Flux.fromIterable(list), MazoViewModel.class)))
+        );
+    }
+
 
     private Query filterByUId(String uid) {
         return new Query(

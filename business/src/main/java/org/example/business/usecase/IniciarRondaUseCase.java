@@ -19,11 +19,13 @@ IniciarRondaUseCase extends UseCaseForCommand<IniciarRondaCommand> {
 
   @Override
   public Flux<DomainEvent> apply(Mono<IniciarRondaCommand> iniciarRondaCommand) {
-    return iniciarRondaCommand.flatMapMany(comando -> repository.obtenerEventosPor(
-        comando.getJuegoId()).collectList().flatMapIterable(evento -> {
-      var juego = Juego.from(JuegoId.of(comando.getJuegoId()), evento);
-      juego.iniciarRonda();
-      return juego.getUncommittedChanges();
+    return iniciarRondaCommand.flatMapMany(comando -> repository
+            .obtenerEventosPor(comando.getJuegoId())
+            .collectList()
+            .flatMapIterable(evento -> {
+                var juego = Juego.from(JuegoId.of(comando.getJuegoId()), evento);
+                juego.iniciarRonda();
+                return juego.getUncommittedChanges();
     }));
   }
 }

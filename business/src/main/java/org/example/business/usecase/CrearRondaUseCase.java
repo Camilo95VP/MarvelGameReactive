@@ -3,16 +3,15 @@ package org.example.business.usecase;
 import co.com.sofka.domain.generic.DomainEvent;
 import org.example.business.gateway.JuegoDomainEventRepository;
 import org.example.domain.Juego;
-import org.example.domain.command.CrearRondaCommand;
+import org.example.domain.events.RondaTerminada;
 import org.example.domain.values.JuegoId;
-import org.example.domain.values.JugadorId;
-import org.example.domain.values.Ronda;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.util.HashSet;
+import java.util.Objects;
 
-import java.util.stream.Collectors;
 
-public class CrearRondaUseCase extends UseCaseForCommand<CrearRondaCommand> {
+public class CrearRondaUseCase extends UseCaseForEvent<RondaTerminada> {
 
   private final JuegoDomainEventRepository repository;
 
@@ -20,24 +19,20 @@ public class CrearRondaUseCase extends UseCaseForCommand<CrearRondaCommand> {
     this.repository = repository;
   }
 
-  @Override
-  public Flux<DomainEvent> apply(Mono<CrearRondaCommand> crearRondaCommandMono) {
-      return crearRondaCommandMono.flatMapMany((comando) ->
-              repository
-                      .obtenerEventosPor(comando.getJuegoId()).collectList()
-                      .flatMapIterable(event -> {
-                          var juego = Juego.from(JuegoId.of(comando.getJuegoId()), event);
-                          var jugadores = comando.getJugadores().stream()
-                                  .map(JugadorId::of).collect(Collectors.toSet());
-
-                          if (juego.ronda() == null) {
-                              juego.crearRonda(new Ronda(1,jugadores), comando.getTiempo());
-                          }
-                          juego.ronda().incrementarRonda(jugadores);
-
-                          return juego.getUncommittedChanges();
-
-                      })
-      );
-  }
+    @Override
+    public Flux<DomainEvent> apply(Mono<RondaTerminada> rondaTerminada) {
+        return rondaTerminada.flatMapMany((event) -> repository
+                .obtenerEventosPor(event.aggregateRootId())
+                .collectList()
+                .flatMapIterable(events -> {
+                    var juego = Juego.from(JuegoId.of(event.aggregateRootId()), events);
+                    var jugadores = new HashSet<>(event.getJugadorIds());
+                    var ronda = juego.ronda();
+                    if(Objects.isNull(ronda)){
+                        throw new IllegalArgumentException("Debe existir la primera ronda");
+                    }
+                    juego.crearRonda(ronda.incrementarRonda(jugadores), 60);
+                    return juego.getUncommittedChanges();
+                }));
+    }
 }

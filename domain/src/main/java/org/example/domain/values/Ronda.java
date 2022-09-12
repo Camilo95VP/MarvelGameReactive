@@ -27,6 +27,12 @@ public class Ronda implements ValueObject<Ronda.Props> {
         }
     }
 
+    public Ronda(Set<JugadorId> jugadores, Integer numero, Boolean estaIniciada) {
+        this.jugadores = jugadores;
+        this.numero = numero;
+        this.estaIniciada = estaIniciada;
+    }
+
     public Ronda iniciarRonda(){
         return new Ronda(this.numero, this.jugadores, true);
     }
