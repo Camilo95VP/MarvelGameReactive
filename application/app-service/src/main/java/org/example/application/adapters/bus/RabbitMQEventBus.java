@@ -19,7 +19,6 @@ public class RabbitMQEventBus implements EventBus {
         this.serializer = serializer;
         this.rabbitTemplate = rabbitTemplate;
         this.applicationEventPublisher = applicationEventPublisher;
-
     }
 
     @Override
@@ -28,11 +27,10 @@ public class RabbitMQEventBus implements EventBus {
                 event.getClass().getTypeName(),
                 serializer.serialize(event)
         );
-
-
         rabbitTemplate.convertAndSend(
                 ApplicationConfig.EXCHANGE, event.type, notification.serialize().getBytes()
         );
+        //applicationEventPublisher.publishEvent(event);
     }
 
     @Override

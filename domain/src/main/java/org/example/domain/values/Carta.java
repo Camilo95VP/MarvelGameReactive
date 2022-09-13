@@ -9,13 +9,15 @@ public class Carta implements ValueObject<Carta.Props> {
     private final Boolean estaOculta;
     private final Boolean estaHabilitada;
     private final Integer poder;
+    private final String url;
 
 
-    public Carta(CartaMaestraId cartaId, Integer poder, Boolean estaOculta, Boolean estaHabilitada) {
+    public Carta(CartaMaestraId cartaId, Integer poder, Boolean estaOculta, Boolean estaHabilitada, String url) {
         this.cartaId = cartaId;
         this.estaOculta = estaOculta;
         this.estaHabilitada = estaHabilitada;
         this.poder = poder;
+        this.url = url;
     }
 
     @Override
@@ -39,6 +41,11 @@ public class Carta implements ValueObject<Carta.Props> {
             @Override
             public Boolean estaHabilitada() {
                 return estaHabilitada;
+            }
+
+            @Override
+            public String url() {
+                return url;
             }
         };
     }
@@ -66,5 +73,7 @@ public class Carta implements ValueObject<Carta.Props> {
         Integer poder();
         Boolean estaOculta();
         Boolean estaHabilitada();
+
+        String url();
     }
 }

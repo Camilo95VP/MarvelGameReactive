@@ -29,8 +29,8 @@ public class QueryHandle {
     @Bean
     public RouterFunction<ServerResponse> listarJuego() {
         return RouterFunctions.route(
-                GET("/juego/listar/{id}"),
-                request -> template.find(filterByUId(request.pathVariable("id")), JuegoListViewModel.class, "gameview")
+                GET("/juego/listar/{uid}"),
+                request -> template.find(filterByUId(request.pathVariable("uid")), JuegoListViewModel.class, "gameview")
                         .collectList()
                         .flatMap(list -> ServerResponse.ok()
                                 .contentType(MediaType.APPLICATION_JSON)

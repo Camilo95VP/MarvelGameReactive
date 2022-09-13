@@ -28,7 +28,6 @@ import reactor.test.StepVerifier;
 
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -69,8 +68,8 @@ class PonerCartaEnTableroUseCaseTest {
         var cartas = Set.of(new Carta(
                 CartaMaestraId.of("xxxxx"),
                 20,
-                false, true
-        ));
+                false, true,
+                url));
         var ronda = new Ronda(1, Set.of(jugadorId, jugador2Id));
         return Flux.just(
                 new JuegoCreado(jugadorId),

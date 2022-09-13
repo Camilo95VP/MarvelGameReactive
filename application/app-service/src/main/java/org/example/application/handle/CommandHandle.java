@@ -3,13 +3,16 @@ package org.example.application.handle;
 
 
 import org.example.business.usecase.CrearJuegoUseCase;
+import org.example.business.usecase.CrearRondaUseCase;
 import org.example.business.usecase.IniciarJuegoUseCase;
 import org.example.business.usecase.IniciarRondaUseCase;
 import org.example.business.usecase.PonerCartaEnTableroUseCase;
 import org.example.domain.command.CrearJuegoCommand;
+import org.example.domain.command.CrearRondaCommand;
 import org.example.domain.command.IniciarJuegoCommand;
 import org.example.domain.command.IniciarRondaCommand;
 import org.example.domain.command.PonerCartaEnTablero;
+import org.example.domain.events.RondaTerminada;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -60,6 +63,18 @@ public class CommandHandle {
                 POST("/juego/ronda/iniciar").and(accept(MediaType.APPLICATION_JSON)),
                 request -> usecase.andThen(integrationHandle)
                         .apply(request.bodyToMono(IniciarRondaCommand.class))
+                        .then(ServerResponse.ok().build())
+                        .onErrorResume(errorHandler::badRequest)
+
+        );
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> crearRonda(CrearRondaUseCase usecase) {
+        return route(
+                POST("/juego/crear/ronda").and(accept(MediaType.APPLICATION_JSON)),
+                request -> usecase.andThen(integrationHandle)
+                        .apply(request.bodyToMono(RondaTerminada.class))
                         .then(ServerResponse.ok().build())
                         .onErrorResume(errorHandler::badRequest)
 

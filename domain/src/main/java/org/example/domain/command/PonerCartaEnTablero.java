@@ -1,10 +1,6 @@
 package org.example.domain.command;
 
 import co.com.sofka.domain.generic.Command;
-import org.example.domain.values.Carta;
-import org.example.domain.values.JuegoId;
-import org.example.domain.values.JugadorId;
-import org.example.domain.values.TableroId;
 
 public class PonerCartaEnTablero extends Command {
     private String jugadorId;

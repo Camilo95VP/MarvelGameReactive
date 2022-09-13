@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CrearRondaUseCaseTest {
-    /*@InjectMocks
+    @InjectMocks
     private CrearRondaUseCase useCase;
     @Mock
     private JuegoDomainEventRepository repository;
@@ -56,7 +56,7 @@ class CrearRondaUseCaseTest {
                 evento,
                 evento2
         );
-    }*/
+    }
 
 
 }
