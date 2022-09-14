@@ -34,7 +34,7 @@ public class CrearRondaUseCase extends UseCaseForEvent<RondaTerminada> {
                     if(Objects.isNull(ronda)){
                         throw new IllegalArgumentException("Debe existir la primera ronda");
                     }
-                    juego.crearRonda(ronda.incrementarRonda(jugadores), 15);
+                    juego.crearRonda(ronda.incrementarRonda(jugadores), 10);
                     return juego.getUncommittedChanges();
                 }));
     }
