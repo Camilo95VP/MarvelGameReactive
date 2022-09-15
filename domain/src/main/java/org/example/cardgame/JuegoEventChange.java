@@ -15,6 +15,7 @@ import org.example.cardgame.events.TableroCreado;
 import org.example.cardgame.events.TiempoCambiadoDelTablero;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
 
 public class JuegoEventChange extends EventChange {
@@ -66,6 +67,7 @@ public class JuegoEventChange extends EventChange {
             }
             juego.ronda = juego.ronda.iniciarRonda();
             juego.tablero.habilitarApuesta();
+            juego.tablero.partida().forEach((key, Value) -> juego.tablero.partida().put(key,new HashSet<>()));
         });
 
         apply((RondaTerminada event) -> {
