@@ -9,6 +9,7 @@ import org.example.cardgame.events.CartasAsignadasAJugador;
 import org.example.cardgame.events.JuegoCreado;
 import org.example.cardgame.events.JuegoFinalizado;
 import org.example.cardgame.events.JugadorAgregado;
+import org.example.cardgame.events.JugadorSeleccionado;
 import org.example.cardgame.events.RondaCreada;
 import org.example.cardgame.events.RondaIniciada;
 import org.example.cardgame.events.RondaTerminada;
@@ -69,6 +70,10 @@ public class Juego extends AggregateEvent<JuegoId> {
     public void ponerCartaEnTablero(TableroId tableroId, JugadorId jugadorId, Carta carta){
         appendChange(new CartaPuestaEnTablero(tableroId, jugadorId, carta)).apply();
         appendChange(new CartaQuitadaDelMazo(jugadorId, carta)).apply();
+    }
+
+    public void selecciocarJuador(String jugadorId){
+        appendChange(new JugadorSeleccionado(jugadorId)).apply();
     }
 
     public void quitarCartaEnTablero(TableroId tableroId, JugadorId jugadorId, Carta carta){
