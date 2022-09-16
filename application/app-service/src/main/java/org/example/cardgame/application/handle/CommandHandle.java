@@ -2,8 +2,10 @@ package org.example.cardgame.application.handle;
 
 
 
+import org.example.cardgame.command.FinalizarRondaCommand;
 import org.example.cardgame.usecase.CrearJuegoUseCase;
 import org.example.cardgame.usecase.CrearRondaUseCase;
+import org.example.cardgame.usecase.FinalizarRondaUseCase;
 import org.example.cardgame.usecase.IniciarJuegoUseCase;
 import org.example.cardgame.usecase.IniciarRondaUseCase;
 import org.example.cardgame.usecase.PonerCartaEnTableroUseCase;
@@ -93,7 +95,16 @@ public class CommandHandle {
         );
     }
 
-
+    @Bean
+    public RouterFunction<ServerResponse> finalizarRonda(FinalizarRondaUseCase usecase) {
+        return route(
+                POST("/juego/ronda/finalizar").and(accept(MediaType.APPLICATION_JSON)),
+                request -> usecase.andThen(integrationHandle)
+                        .apply(request.bodyToMono(FinalizarRondaCommand.class))
+                        .then(ServerResponse.ok().build())
+                        .onErrorResume(errorHandler::badRequest)
+        );
+    }
 
 
 }
