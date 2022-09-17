@@ -21,4 +21,8 @@ __IMPORTANTE:__
 
 Es necesario contar mínimamente con la última versión estable de Java 11 y maven. Asegurarse de contar con ella para poder instalar correctamente las dependencias necesarias para correr el proyecto.
 
+__VIDEO EXPLICATIVO:__
+
+https://www.youtube.com/watch?v=szIAHpo_Vrk&ab_channel=CamiloCasta%C3%B1eda
+
 
